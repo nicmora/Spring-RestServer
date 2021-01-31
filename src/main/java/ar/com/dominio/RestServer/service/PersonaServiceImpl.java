@@ -31,20 +31,28 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
+    public Optional<Persona> getPersonaByApellido(String apellido) {
+        return personaRepository.findByApellido(apellido);
+    }
+
+    @Override
     public void create(Persona persona) {
         personaRepository.save(persona);
     }
 
     @Override
     @Transactional
-    public void update(Long id, String nombre, String apellido, LocalDate fechaNacimiento) {
+    public void update(Long id, Persona personaUpdated) {
         Persona persona = personaRepository.findById(id).orElseThrow(() ->
                 new IllegalStateException("No se encontró a la persona para actualizar"));
 
+        String nombre = personaUpdated.getNombre();
         if(nombre != null && !nombre.isEmpty())
             persona.setNombre(nombre);
+        String apellido = personaUpdated.getApellido();
         if(apellido != null && !apellido.isEmpty())
             persona.setApellido(apellido);
+        LocalDate fechaNacimiento = personaUpdated.getFechaNacimiento();
         if(fechaNacimiento != null)
             persona.setFechaNacimiento(fechaNacimiento);
     }

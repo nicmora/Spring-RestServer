@@ -12,9 +12,11 @@ public interface PersonaService {
 
     Optional<Persona> getPersonaById(Long id);
 
+    Optional<Persona> getPersonaByApellido(String apellido);
+
     void create(Persona persona);
 
-    void update(Long id, String nombre, String apellido, LocalDate fechaNacimiento);
+    void update(Long id, Persona personaUpdated);
 
     void delete(Long id);
 

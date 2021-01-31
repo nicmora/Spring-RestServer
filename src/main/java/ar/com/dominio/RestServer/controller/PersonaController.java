@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/persona")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 public class PersonaController {
 
     private final PersonaService personaService;
@@ -31,6 +32,11 @@ public class PersonaController {
         return personaService.getPersonaById(id);
     }
 
+    @GetMapping("/search")
+    public Optional<Persona> getPersonaByApellido(@RequestParam("apellido") String apellido) {
+        return personaService.getPersonaByApellido(apellido);
+    }
+
     @PostMapping
     public void create(@RequestBody Persona persona) {
         personaService.create(persona);
@@ -39,10 +45,8 @@ public class PersonaController {
     @PutMapping("/{id}")
     public void update(
             @PathVariable("id") Long id,
-            @RequestParam(required = false) String nombre,
-            @RequestParam(required = false) String apellido,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaNacimiento) {
-        personaService.update(id, nombre, apellido, fechaNacimiento);
+            @RequestBody Persona personaUpdated) {
+        personaService.update(id, personaUpdated);
     }
 
     @DeleteMapping("/{id}")
