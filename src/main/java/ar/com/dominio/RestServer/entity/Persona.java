@@ -36,13 +36,13 @@ public class Persona {
     private String apellido;
 
     @NotNull
+    @Column(unique = true, nullable = false)
+    private Long dni;
+
+    @NotNull
     @Column(nullable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate fechaNacimiento;
-
-    @NotNull
-    @Column(unique = true, nullable = false)
-    private Long dni;
 
     @Transient
     private Integer edad;
