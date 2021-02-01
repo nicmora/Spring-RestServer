@@ -3,12 +3,9 @@ package ar.com.dominio.RestServer.controller;
 import ar.com.dominio.RestServer.entity.Persona;
 import ar.com.dominio.RestServer.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/persona")
