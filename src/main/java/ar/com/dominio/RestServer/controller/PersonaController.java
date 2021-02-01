@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/persona")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200")
 public class PersonaController {
 
     private final PersonaService personaService;
@@ -28,13 +28,8 @@ public class PersonaController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Persona> getPersonaById(@PathVariable("id") Long id) {
-        return personaService.getPersonaById(id);
-    }
-
-    @GetMapping("/search")
-    public Optional<Persona> getPersonaByApellido(@RequestParam("apellido") String apellido) {
-        return personaService.getPersonaByApellido(apellido);
+    public Persona getById(@PathVariable("id") Long id) {
+        return personaService.getById(id);
     }
 
     @PostMapping
@@ -45,8 +40,8 @@ public class PersonaController {
     @PutMapping("/{id}")
     public void update(
             @PathVariable("id") Long id,
-            @RequestBody Persona personaUpdated) {
-        personaService.update(id, personaUpdated);
+            @RequestBody Persona personaData) {
+        personaService.update(id, personaData);
     }
 
     @DeleteMapping("/{id}")

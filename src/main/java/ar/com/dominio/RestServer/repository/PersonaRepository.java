@@ -7,6 +7,4 @@ import java.util.Optional;
 
 public interface PersonaRepository extends JpaRepository<Persona, Long> {
 
-    Optional<Persona> findByApellido(String apellido);
-
 }

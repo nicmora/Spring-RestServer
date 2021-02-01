@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PersonaServiceImpl implements PersonaService {
@@ -22,17 +20,16 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public List<Persona> getAll() {
-        return personaRepository.findAll();
+        List<Persona> personas = personaRepository.findAll();
+        if (personas.isEmpty()) {
+            throw new IllegalStateException("No existen datos.");
+        }
+        return personas;
     }
 
     @Override
-    public Optional<Persona> getPersonaById(Long id) {
-        return personaRepository.findById(id);
-    }
-
-    @Override
-    public Optional<Persona> getPersonaByApellido(String apellido) {
-        return personaRepository.findByApellido(apellido);
+    public Persona getById(Long id) {
+        return personaRepository.findById(id).orElseThrow(() -> new IllegalStateException("No existe la persona con id: " + id));
     }
 
     @Override
@@ -42,25 +39,19 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     @Transactional
-    public void update(Long id, Persona personaUpdated) {
+    public void update(Long id, Persona personaData) {
         Persona persona = personaRepository.findById(id).orElseThrow(() ->
                 new IllegalStateException("No se encontró a la persona para actualizar"));
-
-        String nombre = personaUpdated.getNombre();
-        if(nombre != null && !nombre.isEmpty())
-            persona.setNombre(nombre);
-        String apellido = personaUpdated.getApellido();
-        if(apellido != null && !apellido.isEmpty())
-            persona.setApellido(apellido);
-        LocalDate fechaNacimiento = personaUpdated.getFechaNacimiento();
-        if(fechaNacimiento != null)
-            persona.setFechaNacimiento(fechaNacimiento);
+        persona.setNombre(personaData.getNombre());
+        persona.setApellido(personaData.getApellido());
+        persona.setFechaNacimiento(personaData.getFechaNacimiento());
+        persona.setDni(personaData.getDni());
     }
 
     @Override
     public void delete(Long id) {
         boolean exists = personaRepository.existsById(id);
-        if(!exists) {
+        if (!exists) {
             throw new IllegalStateException("No se encontró a la persona para eliminar");
         }
         personaRepository.deleteById(id);

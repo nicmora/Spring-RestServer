@@ -10,13 +10,11 @@ public interface PersonaService {
 
     List<Persona> getAll();
 
-    Optional<Persona> getPersonaById(Long id);
-
-    Optional<Persona> getPersonaByApellido(String apellido);
+    Persona getById(Long id);
 
     void create(Persona persona);
 
-    void update(Long id, Persona personaUpdated);
+    void update(Long id, Persona personaData);
 
     void delete(Long id);
 
