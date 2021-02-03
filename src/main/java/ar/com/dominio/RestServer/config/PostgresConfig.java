@@ -1,6 +1,6 @@
 package ar.com.dominio.RestServer.config;
 
-import ar.com.dominio.RestServer.entity.Persona;
+import ar.com.dominio.RestServer.model.Persona;
 import ar.com.dominio.RestServer.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

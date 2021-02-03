@@ -1,6 +1,6 @@
 package ar.com.dominio.RestServer.service;
 
-import ar.com.dominio.RestServer.entity.Persona;
+import ar.com.dominio.RestServer.model.Persona;
 
 import java.util.List;
 

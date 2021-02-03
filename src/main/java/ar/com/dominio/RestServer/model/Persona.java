@@ -1,8 +1,10 @@
-package ar.com.dominio.RestServer.entity;
+package ar.com.dominio.RestServer.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +14,8 @@ import java.time.Period;
 @Entity
 @Table
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Persona {
 

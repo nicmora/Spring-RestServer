@@ -1,6 +1,6 @@
 package ar.com.dominio.RestServer.controller;
 
-import ar.com.dominio.RestServer.entity.Persona;
+import ar.com.dominio.RestServer.model.Persona;
 import ar.com.dominio.RestServer.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

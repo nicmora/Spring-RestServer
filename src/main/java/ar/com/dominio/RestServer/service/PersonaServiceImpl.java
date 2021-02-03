@@ -1,10 +1,12 @@
 package ar.com.dominio.RestServer.service;
 
-import ar.com.dominio.RestServer.entity.Persona;
+import ar.com.dominio.RestServer.model.Persona;
 import ar.com.dominio.RestServer.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,14 +24,14 @@ public class PersonaServiceImpl implements PersonaService {
     public List<Persona> getAll() {
         List<Persona> personas = personaRepository.findAll();
         if (personas.isEmpty()) {
-            throw new IllegalStateException("No existen datos.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existen datos en la base.");
         }
         return personas;
     }
 
     @Override
     public Persona getById(Long id) {
-        return personaRepository.findById(id).orElseThrow(() -> new IllegalStateException("No existe la persona con id: " + id));
+        return personaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe la persona con id: " + id));
     }
 
     @Override
@@ -41,7 +43,11 @@ public class PersonaServiceImpl implements PersonaService {
     @Transactional
     public void update(Long id, Persona personaData) {
         Persona persona = personaRepository.findById(id).orElseThrow(() ->
-                new IllegalStateException("No se encontró a la persona para actualizar"));
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró a la persona para actualizar."));
+        boolean exists = personaRepository.existsByDni(personaData.getDni());
+        if (exists) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe una persona con el dni: " + personaData.getDni());
+        }
         persona.setNombre(personaData.getNombre());
         persona.setApellido(personaData.getApellido());
         persona.setFechaNacimiento(personaData.getFechaNacimiento());
@@ -52,7 +58,7 @@ public class PersonaServiceImpl implements PersonaService {
     public void delete(Long id) {
         boolean exists = personaRepository.existsById(id);
         if (!exists) {
-            throw new IllegalStateException("No se encontró a la persona para eliminar");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró a la persona para eliminar.");
         }
         personaRepository.deleteById(id);
     }
