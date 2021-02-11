@@ -35,23 +35,26 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public void create(Persona persona) {
-        personaRepository.save(persona);
+    public Persona create(Persona personaData) {
+        return personaRepository.save(personaData);
     }
 
     @Override
     @Transactional
-    public void update(Long id, Persona personaData) {
+    public Persona update(Long id, Persona personaData) {
         Persona persona = personaRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró a la persona para actualizar."));
-        boolean exists = personaRepository.existsByDni(personaData.getDni());
-        if (exists) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe una persona con el dni: " + personaData.getDni());
+        if (!persona.getDni().equals(personaData.getDni())) {
+            boolean exists = personaRepository.existsByDni(personaData.getDni());
+            if (exists) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe una persona con el dni: " + personaData.getDni());
+            }
         }
         persona.setNombre(personaData.getNombre());
         persona.setApellido(personaData.getApellido());
         persona.setFechaNacimiento(personaData.getFechaNacimiento());
         persona.setDni(personaData.getDni());
+        return persona;
     }
 
     @Override

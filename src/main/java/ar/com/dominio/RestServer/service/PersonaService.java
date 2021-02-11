@@ -10,9 +10,9 @@ public interface PersonaService {
 
     Persona getById(Long id);
 
-    void create(Persona persona);
+    Persona create(Persona personaData);
 
-    void update(Long id, Persona personaData);
+    Persona update(Long id, Persona personaData);
 
     void delete(Long id);
 

@@ -29,18 +29,17 @@ public class Persona {
             generator = "persona_sequence",
             strategy = GenerationType.SEQUENCE
     )
+    @Column(nullable = false, updatable = false)
     private Long id;
 
     private String nombre;
 
     private String apellido;
 
-    @NotNull
-    @Column(unique = true, nullable = false)
+    @NotNull(message = "El dni es obligatoria")
+    @Column(nullable = false, unique = true)
     private Long dni;
 
-    @NotNull
-    @Column(nullable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate fechaNacimiento;
 

@@ -3,8 +3,11 @@ package ar.com.dominio.RestServer.controller;
 import ar.com.dominio.RestServer.model.Persona;
 import ar.com.dominio.RestServer.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,30 +23,35 @@ public class PersonaController {
     }
 
     @GetMapping
-    public List<Persona> getAll() {
-        return personaService.getAll();
+    public ResponseEntity<List<Persona>> getAll() {
+        List<Persona> personas = personaService.getAll();
+        return new ResponseEntity<>(personas, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Persona getById(@PathVariable("id") Long id) {
-        return personaService.getById(id);
+    public ResponseEntity<Persona> getById(@PathVariable("id") Long id) {
+        Persona persona = personaService.getById(id);
+        return new ResponseEntity<>(persona, HttpStatus.OK);
     }
 
-    @PostMapping
-    public void create(@RequestBody Persona persona) {
-        personaService.create(persona);
+    @PostMapping("/create")
+    public ResponseEntity<Persona> create(@Valid @RequestBody Persona personaData) {
+        Persona persona = personaService.create(personaData);
+        return new ResponseEntity<>(persona, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public void update(
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Persona> update(
             @PathVariable("id") Long id,
-            @RequestBody Persona personaData) {
-        personaService.update(id, personaData);
+            @Valid @RequestBody Persona personaData) {
+        Persona persona = personaService.update(id, personaData);
+        return new ResponseEntity<>(persona, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Persona> delete(@PathVariable("id") Long id) {
         personaService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
